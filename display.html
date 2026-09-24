@@ -7,89 +7,160 @@
 
 <style>
 *{box-sizing:border-box}
+
 html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;
-  background:#020611;color:white;
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#020611;
+  color:white;
   font-family:system-ui,-apple-system,Segoe UI,sans-serif
 }
+
 #bg{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;filter:saturate(1.15) brightness(.72)
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:saturate(1.15) brightness(.72)
 }
+
 #shade{
-  position:absolute;inset:0;
-  background:radial-gradient(circle at 53% 55%,
-  rgba(0,0,0,.05),rgba(0,3,16,.38) 55%,rgba(0,2,10,.6))
+  position:absolute;
+  inset:0;
+  background:radial-gradient(
+    circle at 53% 55%,
+    rgba(0,0,0,.05),
+    rgba(0,3,16,.38) 55%,
+    rgba(0,2,10,.6)
+  )
 }
+
 #space{
-  position:absolute;inset:0;width:100%;height:100%;
-  cursor:default
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
 }
-.title{position:absolute;left:30px;top:24px}
+
+.title{
+  position:absolute;
+  left:30px;
+  top:24px
+}
+
 .ey{
-  font-size:12px;letter-spacing:.24em;
-  color:#75dcff;font-weight:900
+  font-size:12px;
+  letter-spacing:.24em;
+  color:#75dcff;
+  font-weight:900
 }
-.title h1{font-size:36px;margin:5px 0}
-.title p{margin:0;color:#d4deec}
+
+.title h1{
+  font-size:36px;
+  margin:5px 0
+}
 
 .empty{
-  position:absolute;left:50%;top:73%;
+  position:absolute;
+  left:50%;
+  top:73%;
   transform:translate(-50%,-50%);
-  text-align:center;color:rgba(255,255,255,.82);
+  text-align:center;
+  color:rgba(255,255,255,.82);
   transition:opacity .4s;
   pointer-events:none
 }
+
 .empty b{font-size:21px}
-.empty small{display:block;margin-top:5px}
+
+.empty small{
+  display:block;
+  margin-top:5px
+}
 
 .live{
-  position:absolute;right:30px;top:25px;
+  position:absolute;
+  right:30px;
+  top:25px;
   background:rgba(2,9,28,.68);
   border:1px solid rgba(255,255,255,.18);
-  border-radius:17px;padding:11px 16px;text-align:center
+  border-radius:17px;
+  padding:11px 16px;
+  text-align:center
 }
+
 .live b{color:#75dcff}
 
 .key{
-  position:absolute;left:50%;bottom:20px;
+  position:absolute;
+  left:50%;
+  bottom:20px;
   transform:translateX(-50%);
-  white-space:nowrap;background:rgba(2,9,28,.68);
+  white-space:nowrap;
+  background:rgba(2,9,28,.68);
   border:1px solid rgba(255,255,255,.14);
-  border-radius:999px;padding:10px 18px;font-weight:800
+  border-radius:999px;
+  padding:10px 18px;
+  font-weight:800
 }
 
 .count{
-  position:absolute;left:28px;bottom:22px;
+  position:absolute;
+  left:28px;
+  bottom:22px;
   background:rgba(2,9,28,.65);
-  padding:10px 14px;border-radius:13px
+  padding:10px 14px;
+  border-radius:13px
 }
 
 .controls{
-  position:absolute;right:24px;bottom:18px;
-  display:flex;gap:7px
+  position:absolute;
+  right:24px;
+  bottom:18px;
+  display:flex;
+  gap:7px
 }
+
 .controls button{
   border:1px solid rgba(255,255,255,.18);
   background:rgba(2,9,28,.78);
-  color:white;border-radius:12px;
-  padding:10px 13px;font-weight:750
+  color:white;
+  border-radius:12px;
+  padding:10px 13px;
+  font-weight:750;
+  cursor:pointer
+}
+
+.controls button:hover{
+  background:rgba(15,30,60,.9)
+}
+
+#deleteAll{
+  border-color:rgba(255,100,100,.65)
+}
+
+#deleteAll:hover{
+  background:rgba(100,20,25,.85)
 }
 
 .removeHint{
   position:absolute;
   left:50%;
-  top:18px;
+  top:22px;
   transform:translateX(-50%);
-  background:rgba(2,9,28,.72);
+  background:rgba(2,9,28,.68);
   border:1px solid rgba(255,255,255,.14);
   border-radius:999px;
   padding:8px 15px;
   font-size:13px;
-  font-weight:700;
   color:#dcecff;
+  font-weight:700;
   pointer-events:none
 }
+
 </style>
 </head>
 
@@ -97,6 +168,7 @@ html,body{
 
 <img id="bg" src="starfield-reference.png" alt="">
 <div id="shade"></div>
+
 <canvas id="space"></canvas>
 
 <div class="title">
@@ -109,549 +181,1113 @@ html,body{
   <small id="connection">Connecting…</small>
 </div>
 
-<div class="removeHint">Click a planet or rocket to remove it</div>
+<div class="removeHint">
+  Click a planet or rocket to remove it
+</div>
 
 <div id="empty" class="empty">
   <b>Our solar system is waiting…</b>
   <small>Scan a colouring sheet QR code and launch the first planet.</small>
 </div>
 
-<div class="count"><b id="count">0</b> worlds created</div>
+<div class="count">
+  <b id="count">0</b> worlds created
+</div>
 
 <div class="key">
-🔥 closer = warmer + faster &nbsp; • &nbsp; ❄️ further = colder + much slower
+  🔥 closer = warmer + faster
+  &nbsp; • &nbsp;
+  ❄️ further = colder + much slower
 </div>
 
 <div class="controls">
   <button id="pause">Pause</button>
   <button id="clear">Hide all</button>
+  <button id="deleteAll">Delete all data</button>
 </div>
+
 
 <script>
 
+/* =========================================================
+   DATABASE
+========================================================= */
+
 const SUPA_URL='https://ffoluszrxgmscpwnuhql.supabase.co';
-const SUPA_KEY='sb_publishable_ybduIo69hLm0fPuivTK5GA_XD5xbIz4';
-const EVENT_ID=new URLSearchParams(location.search).get('event')||'cairns-demo';
+
+const SUPA_KEY=
+'sb_publishable_ybduIo69hLm0fPuivTK5GA_XD5xbIz4';
+
+const EVENT_ID=
+new URLSearchParams(location.search).get('event')
+||'cairns-demo';
+
+
+/* =========================================================
+   SETUP
+========================================================= */
 
 const c=document.querySelector('#space');
 const x=c.getContext('2d');
+
 const empty=document.querySelector('#empty');
 const count=document.querySelector('#count');
 const conn=document.querySelector('#connection');
 
 let W,H,D;
+
 let worlds=[];
 let paused=false;
+
 let last=performance.now();
+
 let seen=new Set();
 
+let newest='1970-01-01T00:00:00Z';
+
+
 function resize(){
+
   D=Math.min(devicePixelRatio||1,2);
+
   W=innerWidth;
   H=innerHeight;
+
   c.width=W*D;
   c.height=H*D;
-  x.setTransform(D,0,0,D,0,0)
+
+  x.setTransform(D,0,0,D,0,0);
 }
 
 addEventListener('resize',resize);
+
 resize();
 
 
-/* -------------------------------
-   ADD NEW SUBMISSION
--------------------------------- */
+/* =========================================================
+   ADD PLANET / ROCKET
+========================================================= */
 
 function addRow(r,launch=true){
 
-  if(seen.has(r.id)||r.event_id!==EVENT_ID)return;
+  if(
+    seen.has(r.id) ||
+    r.event_id!==EVENT_ID
+  ) return;
 
   seen.add(r.id);
 
+
   const im=new Image();
+
   im.src=r.image_data||'';
 
+
   worlds.push({
+
     id:r.id,
-    d:Math.max(1,Math.min(9,+r.distance||5)),
-    s:r.planet_size==='small'?9:r.planet_size==='giant'?46:23,
-    a:Math.random()*6.283,
+
+    d:Math.max(
+      1,
+      Math.min(9,+r.distance||5)
+    ),
+
+    s:
+      r.planet_size==='small'
+      ?9
+      :r.planet_size==='giant'
+      ?46
+      :23,
+
+    a:Math.random()*Math.PI*2,
+
     img:im,
+
     moons:+r.moon_count||0,
+
     mc:r.moon_colour||'#eef4ff',
+
     ring:!!r.has_rings,
+
     rc:r.ring_colour||'#ffd36a',
 
-    /* launch animation */
-    born: launch ? performance.now() : 0,
-    launching: launch,
 
-    /* current screen position for clicking */
+    /* Launch animation */
+
+    launching:launch,
+
+    born:launch
+      ?performance.now()
+      :0,
+
+
+    /* Used for mouse clicking */
+
     px:0,
+
     py:0,
+
     drawSize:0
+
   });
 
+
   empty.style.opacity=0;
+
   count.textContent=worlds.length;
 }
 
 
-/* -------------------------------
-   LOAD EXISTING OBJECTS
--------------------------------- */
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
 
 async function load(){
 
   try{
 
     const r=await fetch(
+
       SUPA_URL+
       '/rest/v1/planets?event_id=eq.'+
       encodeURIComponent(EVENT_ID)+
       '&select=*&order=created_at.asc',
+
       {
         headers:{
           apikey:SUPA_KEY,
           Authorization:'Bearer '+SUPA_KEY
         }
       }
+
     );
 
-    if(!r.ok)throw new Error(await r.text());
+
+    if(!r.ok)
+      throw new Error(await r.text());
+
 
     const rows=await r.json();
 
-    /* Existing objects don't relaunch when screen refreshes */
+
+    /*
+      Existing planets simply appear in orbit.
+      They don't perform the launch animation.
+    */
+
     rows.forEach(q=>addRow(q,false));
+
+
+    /*
+      Record the newest existing database row.
+    */
+
+    if(rows.length){
+
+      newest=
+        rows[rows.length-1].created_at;
+
+    }
+
 
     conn.textContent='Connected';
 
+
   }catch(e){
+
     console.error(e);
-    conn.textContent='Connection error'
+
+    conn.textContent='Connection error';
+
   }
 }
 
 
-/* -------------------------------
-   POLL FOR NEW SUBMISSIONS
--------------------------------- */
-
-let newest='1970-01-01T00:00:00Z';
+/* =========================================================
+   CHECK FOR NEW SUBMISSIONS
+========================================================= */
 
 async function poll(){
 
   try{
 
     const r=await fetch(
+
       SUPA_URL+
       '/rest/v1/planets?event_id=eq.'+
       encodeURIComponent(EVENT_ID)+
       '&created_at=gt.'+
       encodeURIComponent(newest)+
       '&select=*&order=created_at.asc',
+
       {
         headers:{
           apikey:SUPA_KEY,
           Authorization:'Bearer '+SUPA_KEY
         }
       }
+
     );
+
 
     if(r.ok){
 
       const rows=await r.json();
 
+
       rows.forEach(q=>{
 
+        /*
+          THIS is where a newly submitted
+          drawing gets its large launch.
+        */
+
         addRow(q,true);
+
 
         if(q.created_at>newest)
           newest=q.created_at;
 
       });
 
+
       conn.textContent='Connected';
     }
 
+
   }catch(e){
-    conn.textContent='Reconnecting…'
+
+    console.error(e);
+
+    conn.textContent='Reconnecting…';
+
   }
+
 
   setTimeout(poll,1200);
 }
 
 
-/* -------------------------------
-   DRAW PLANET / ROCKET IMAGE
--------------------------------- */
+/* =========================================================
+   DRAW PLANET / ROCKET
+========================================================= */
 
 function planet(p,px,py,size){
 
-  const oldSize=p.s;
-  p.s=size;
+  const baseSize=p.s;
+
+
+  /* Rings */
 
   if(p.ring){
 
     x.save();
 
     x.strokeStyle=p.rc;
+
     x.globalAlpha=.9;
-    x.lineWidth=Math.max(3,p.s*.18);
+
+    x.lineWidth=
+      Math.max(3,size*.18);
 
     x.beginPath();
+
     x.ellipse(
-      px,py,
-      p.s*1.8,
-      p.s*.45,
-      -.2,0,6.283
+      px,
+      py,
+      size*1.8,
+      size*.45,
+      -.2,
+      0,
+      Math.PI*2
     );
+
     x.stroke();
 
     x.restore();
+
   }
+
+
+  /* Main drawing */
 
   x.save();
 
   x.beginPath();
-  x.arc(px,py,p.s,0,6.283);
+
+  x.arc(
+    px,
+    py,
+    size,
+    0,
+    Math.PI*2
+  );
+
   x.clip();
 
-  if(p.img.complete&&p.img.naturalWidth){
+
+  if(
+    p.img.complete &&
+    p.img.naturalWidth
+  ){
 
     x.drawImage(
       p.img,
-      px-p.s,
-      py-p.s,
-      p.s*2,
-      p.s*2
+      px-size,
+      py-size,
+      size*2,
+      size*2
     );
 
   }else{
 
     x.fillStyle='#6ed2ff';
+
     x.fillRect(
-      px-p.s,
-      py-p.s,
-      p.s*2,
-      p.s*2
+      px-size,
+      py-size,
+      size*2,
+      size*2
     );
+
   }
+
 
   x.restore();
 
-  x.strokeStyle='rgba(255,255,255,.7)';
+
+  /* Outline */
+
+  x.strokeStyle=
+    'rgba(255,255,255,.7)';
+
   x.lineWidth=1;
 
   x.beginPath();
-  x.arc(px,py,p.s,0,6.283);
+
+  x.arc(
+    px,
+    py,
+    size,
+    0,
+    Math.PI*2
+  );
+
   x.stroke();
 
 
   /* Moons */
 
-  for(let m=0;m<p.moons;m++){
+  for(
+    let m=0;
+    m<p.moons;
+    m++
+  ){
 
-    let layer=Math.floor(m/5);
+    let layer=
+      Math.floor(m/5);
 
-    let a=
+
+    let ma=
       p.a*1.5+
-      m*6.283/Math.max(p.moons,1);
+      m*Math.PI*2/
+      Math.max(p.moons,1);
+
 
     let rr=
-      p.s*1.6+
-      layer*(p.s*.55+5)+
+      size*1.6+
+      layer*(size*.55+5)+
       (m%2)*4;
+
 
     x.fillStyle=p.mc;
 
+
     x.beginPath();
 
+
     x.arc(
-      px+Math.cos(a)*rr,
-      py+Math.sin(a)*rr*.62,
-      Math.max(2.5,Math.min(5,p.s*.13)),
-      0,6.283
+
+      px+
+      Math.cos(ma)*rr,
+
+      py+
+      Math.sin(ma)*rr*.62,
+
+      Math.max(
+        2.5,
+        Math.min(
+          5,
+          size*.13
+        )
+      ),
+
+      0,
+
+      Math.PI*2
+
     );
 
+
     x.fill();
+
   }
 
-  p.s=oldSize;
 }
 
 
-/* -------------------------------
-   MAIN ANIMATION
--------------------------------- */
+/* =========================================================
+   MAIN DISPLAY
+========================================================= */
 
 function draw(t){
 
-  x.clearRect(0,0,W,H);
+  x.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
 
-  let cx=W*.53;
-  let cy=H*.55;
-  let b=Math.min(W,H);
+
+  const cx=W*.53;
+
+  const cy=H*.55;
+
+  const b=Math.min(W,H);
 
 
-  /* orbital paths */
+  /* Orbit lines */
 
-  for(let i=1;i<=9;i++){
+  for(
+    let i=1;
+    i<=9;
+    i++
+  ){
 
-    let r=b*(.105+i*.047);
+    const r=
+      b*(.105+i*.047);
 
-    x.strokeStyle='rgba(220,238,255,.15)';
+
+    x.strokeStyle=
+      'rgba(220,238,255,.15)';
+
 
     x.beginPath();
-    x.ellipse(cx,cy,r,r*.61,0,0,6.283);
+
+
+    x.ellipse(
+      cx,
+      cy,
+      r,
+      r*.61,
+      0,
+      0,
+      Math.PI*2
+    );
+
+
     x.stroke();
+
   }
+
+
+  /* Sun glow */
+
+  let g=
+    x.createRadialGradient(
+      cx,
+      cy,
+      0,
+      cx,
+      cy,
+      88
+    );
+
+
+  g.addColorStop(
+    0,
+    '#fffde1'
+  );
+
+  g.addColorStop(
+    .22,
+    '#ffe267'
+  );
+
+  g.addColorStop(
+    .52,
+    'rgba(255,154,45,.75)'
+  );
+
+  g.addColorStop(
+    1,
+    'rgba(255,130,20,0)'
+  );
+
+
+  x.fillStyle=g;
+
+
+  x.beginPath();
+
+  x.arc(
+    cx,
+    cy,
+    88,
+    0,
+    Math.PI*2
+  );
+
+  x.fill();
 
 
   /* Sun */
 
-  let g=x.createRadialGradient(
-    cx,cy,0,
-    cx,cy,88
-  );
-
-  g.addColorStop(0,'#fffde1');
-  g.addColorStop(.22,'#ffe267');
-  g.addColorStop(.52,'rgba(255,154,45,.75)');
-  g.addColorStop(1,'rgba(255,130,20,0)');
-
-  x.fillStyle=g;
-
-  x.beginPath();
-  x.arc(cx,cy,88,0,6.283);
-  x.fill();
-
   x.fillStyle='#ffdc68';
 
   x.beginPath();
-  x.arc(cx,cy,29,0,6.283);
+
+  x.arc(
+    cx,
+    cy,
+    29,
+    0,
+    Math.PI*2
+  );
+
   x.fill();
 
 
-  let dt=Math.min(.04,(t-last)/1000);
+  /* Timing */
+
+  let dt=
+    Math.min(
+      .04,
+      (t-last)/1000
+    );
+
   last=t;
 
 
+  /* Worlds */
+
   worlds.forEach(p=>{
 
-    if(!paused)
-      p.a+=(3/Math.pow(p.d,2.05))*dt;
+
+    if(!paused){
+
+      p.a+=
+        (
+          3/
+          Math.pow(p.d,2.05)
+        )*dt;
+
+    }
 
 
-    let r=b*(.105+p.d*.047);
-
-    let orbitX=
-      cx+Math.cos(p.a)*r;
-
-    let orbitY=
-      cy+Math.sin(p.a)*r*.61;
+    const r=
+      b*(.105+p.d*.047);
 
 
-    /* --------------------------------
-       LARGE LAUNCH ANIMATION
-    -------------------------------- */
+    const orbitX=
+      cx+
+      Math.cos(p.a)*r;
+
+
+    const orbitY=
+      cy+
+      Math.sin(p.a)*r*.61;
+
+
+
+    /* =========================================
+       LARGE NEW-SUBMISSION LAUNCH
+    ========================================= */
 
     if(p.launching){
 
-      const duration=2600;
 
-      let progress=
-        Math.min(1,(t-p.born)/duration);
+      const duration=3000;
 
 
-      /*
-       Starts huge near centre of screen
-       and travels smoothly into orbit.
-      */
-
-      let ease=
-        1-Math.pow(1-progress,3);
-
-
-      let startX=W*.5;
-      let startY=H*.48;
-
-
-      let px=
-        startX+(orbitX-startX)*ease;
-
-      let py=
-        startY+(orbitY-startY)*ease;
+      const progress=
+        Math.min(
+          1,
+          (t-p.born)/duration
+        );
 
 
       /*
-       Large initial size.
-       Giant drawings become especially dramatic.
+        Smooth deceleration.
       */
 
-      let launchSize=
-        Math.max(115,p.s*3.2);
+      const ease=
+        1-
+        Math.pow(
+          1-progress,
+          3
+        );
 
-      let size=
+
+      /*
+        Starts in centre of display.
+      */
+
+      const startX=W*.5;
+
+      const startY=H*.47;
+
+
+      const px=
+        startX+
+        (orbitX-startX)*ease;
+
+
+      const py=
+        startY+
+        (orbitY-startY)*ease;
+
+
+      /*
+        VERY LARGE when first launched.
+
+        Minimum radius 140px =
+        approximately 280px across.
+      */
+
+      const launchSize=
+        Math.max(
+          140,
+          p.s*4
+        );
+
+
+      const size=
         launchSize+
         (p.s-launchSize)*ease;
 
 
-      /* glow during launch */
+
+      /* Glow */
 
       x.save();
 
-      x.shadowColor='rgba(117,220,255,.9)';
-      x.shadowBlur=
-        45*(1-progress);
 
-      planet(p,px,py,size);
+      x.shadowColor=
+        'rgba(117,220,255,.95)';
+
+
+      x.shadowBlur=
+        60*(1-progress);
+
+
+      planet(
+        p,
+        px,
+        py,
+        size
+      );
+
 
       x.restore();
 
 
+
       p.px=px;
+
       p.py=py;
+
       p.drawSize=size;
 
 
-      if(progress>=1)
+
+      if(progress>=1){
+
         p.launching=false;
+
+      }
+
 
     }else{
 
-      planet(p,orbitX,orbitY,p.s);
+
+      planet(
+        p,
+        orbitX,
+        orbitY,
+        p.s
+      );
+
 
       p.px=orbitX;
+
       p.py=orbitY;
+
       p.drawSize=p.s;
+
     }
 
   });
 
+
   requestAnimationFrame(draw);
+
 }
+
 
 requestAnimationFrame(draw);
 
 
-/* -------------------------------
-   CLICK PLANET TO REMOVE
--------------------------------- */
+/* =========================================================
+   CLICK AN INDIVIDUAL WORLD TO HIDE IT
+========================================================= */
 
-c.addEventListener('mousemove',e=>{
+c.addEventListener(
+  'mousemove',
+  e=>{
 
-  const rect=c.getBoundingClientRect();
-
-  const mx=e.clientX-rect.left;
-  const my=e.clientY-rect.top;
-
-  let over=false;
-
-  for(let i=worlds.length-1;i>=0;i--){
-
-    const p=worlds[i];
-
-    const dx=mx-p.px;
-    const dy=my-p.py;
-
-    const hitRadius=
-      Math.max(18,p.drawSize*1.4);
-
-    if(
-      dx*dx+dy*dy
-      <=hitRadius*hitRadius
-    ){
-      over=true;
-      break;
-    }
-  }
-
-  c.style.cursor=
-    over?'pointer':'default';
-});
+    const rect=
+      c.getBoundingClientRect();
 
 
-c.addEventListener('click',e=>{
-
-  const rect=c.getBoundingClientRect();
-
-  const mx=e.clientX-rect.left;
-  const my=e.clientY-rect.top;
+    const mx=
+      e.clientX-
+      rect.left;
 
 
-  /* work backwards so top-most object wins */
-
-  for(let i=worlds.length-1;i>=0;i--){
-
-    const p=worlds[i];
-
-    const dx=mx-p.px;
-    const dy=my-p.py;
-
-    const hitRadius=
-      Math.max(18,p.drawSize*1.4);
+    const my=
+      e.clientY-
+      rect.top;
 
 
-    if(
-      dx*dx+dy*dy
-      <=hitRadius*hitRadius
+    let over=false;
+
+
+    for(
+      let i=worlds.length-1;
+      i>=0;
+      i--
     ){
 
-      worlds.splice(i,1);
+      const p=worlds[i];
 
-      count.textContent=worlds.length;
 
-      if(!worlds.length)
-        empty.style.opacity=1;
+      const dx=
+        mx-p.px;
 
-      return;
+
+      const dy=
+        my-p.py;
+
+
+      const hitRadius=
+        Math.max(
+          20,
+          p.drawSize*1.4
+        );
+
+
+      if(
+        dx*dx+
+        dy*dy
+        <=
+        hitRadius*hitRadius
+      ){
+
+        over=true;
+
+        break;
+
+      }
+
     }
+
+
+    c.style.cursor=
+      over
+      ?'pointer'
+      :'default';
+
   }
-});
+);
 
 
-/* -------------------------------
-   CONTROLS
--------------------------------- */
+c.addEventListener(
+  'click',
+  e=>{
 
-document.querySelector('#pause').onclick=e=>{
+    const rect=
+      c.getBoundingClientRect();
+
+
+    const mx=
+      e.clientX-
+      rect.left;
+
+
+    const my=
+      e.clientY-
+      rect.top;
+
+
+    for(
+      let i=worlds.length-1;
+      i>=0;
+      i--
+    ){
+
+      const p=worlds[i];
+
+
+      const dx=
+        mx-p.px;
+
+
+      const dy=
+        my-p.py;
+
+
+      const hitRadius=
+        Math.max(
+          20,
+          p.drawSize*1.4
+        );
+
+
+      if(
+        dx*dx+
+        dy*dy
+        <=
+        hitRadius*hitRadius
+      ){
+
+        /*
+          Only removes it from THIS display.
+          Database data is retained.
+        */
+
+        worlds.splice(i,1);
+
+
+        count.textContent=
+          worlds.length;
+
+
+        if(!worlds.length){
+
+          empty.style.opacity=1;
+
+        }
+
+
+        return;
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   PAUSE
+========================================================= */
+
+document.querySelector('#pause')
+.onclick=e=>{
 
   paused=!paused;
 
+
   e.target.textContent=
-    paused?'Resume':'Pause';
+    paused
+    ?'Resume'
+    :'Pause';
+
 };
 
 
-document.querySelector('#clear').onclick=()=>{
+/* =========================================================
+   HIDE EVERYTHING — DATABASE IS NOT CHANGED
+========================================================= */
+
+document.querySelector('#clear')
+.onclick=()=>{
 
   worlds=[];
-  seen.clear();
 
   count.textContent=0;
+
   empty.style.opacity=1;
+
 };
 
 
-/* -------------------------------
+/* =========================================================
+   PERMANENTLY DELETE ALL EVENT DATA
+========================================================= */
+
+document.querySelector('#deleteAll')
+.onclick=async()=>{
+
+
+  const first=
+    confirm(
+      'Permanently delete ALL planets and rockets submitted to this event?\n\nThis cannot be undone.'
+    );
+
+
+  if(!first)return;
+
+
+  const second=
+    confirm(
+      'Are you sure?\n\nThis will permanently erase all submissions for this event.'
+    );
+
+
+  if(!second)return;
+
+
+  const button=
+    document.querySelector(
+      '#deleteAll'
+    );
+
+
+  button.disabled=true;
+
+  button.textContent=
+    'Deleting…';
+
+
+  try{
+
+
+    const r=
+      await fetch(
+
+        SUPA_URL+
+        '/rest/v1/planets?event_id=eq.'+
+        encodeURIComponent(EVENT_ID),
+
+        {
+
+          method:'DELETE',
+
+          headers:{
+
+            apikey:
+              SUPA_KEY,
+
+            Authorization:
+              'Bearer '+
+              SUPA_KEY,
+
+            Prefer:
+              'return=representation'
+
+          }
+
+        }
+
+      );
+
+
+    if(!r.ok){
+
+      throw new Error(
+        await r.text()
+      );
+
+    }
+
+
+    const deleted=
+      await r.json();
+
+
+    /*
+      Clear local display.
+    */
+
+    worlds=[];
+
+    seen.clear();
+
+    count.textContent=0;
+
+    empty.style.opacity=1;
+
+
+    /*
+      Reset polling position.
+    */
+
+    newest=
+      new Date().toISOString();
+
+
+    alert(
+
+      'Event reset complete.\n\n'+
+
+      deleted.length+
+
+      ' submission'+
+
+      (
+        deleted.length===1
+        ?''
+        :'s'
+      )+
+
+      ' permanently deleted.'
+
+    );
+
+
+  }catch(e){
+
+
+    console.error(e);
+
+
+    alert(
+
+      'The submissions could not be permanently deleted.\n\n'+
+
+      'Your Supabase table may not currently allow DELETE access.'
+
+    );
+
+
+  }finally{
+
+
+    button.disabled=false;
+
+    button.textContent=
+      'Delete all data';
+
+  }
+
+};
+
+
+/* =========================================================
    START
--------------------------------- */
+========================================================= */
 
 load().then(()=>{
 
-  /*
-   Ignore all submissions already loaded when
-   determining what counts as a "new" launch.
-  */
-
-  if(worlds.length)
-    newest=new Date().toISOString();
-
   poll();
+
 });
 
 </script>
+
 </body>
 </html>
